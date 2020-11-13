@@ -10,9 +10,12 @@ def main():
     f.close()
     f = open(out_file, 'w')
     for line in lines:
-        if line and not json.loads(line)['truncated']:
-            f.write((json.loads(line)['text']).replace('\n', 'NEWLINE'))
-            f.write('\n')
+        if line:
+            line_parsed = json.loads(line)
+            if not line_parsed['truncated'] and line_parsed['user']['id'] == 25073877:  # 25073877 is Trump's Twitter id
+                # print(json.dumps(json.loads(line), indent=4, sort_keys=True))
+                f.write((json.loads(line)['text']).replace('\n', 'NEWLINE'))
+                f.write('\n')
     f.close()
 
 if __name__ == '__main__':
