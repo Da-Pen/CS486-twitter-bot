@@ -15,22 +15,22 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 def download_all_tweets(user, file):
     list_of_pages = []
     on_page=0
-    for page in tweepy.Cursor(api.user_timeline, screen_name=user,count=100).pages():
-        print(user + str(on_page))
+    for page in tweepy.Cursor(api.user_timeline, screen_name=user,count=100, tweet_mode='extended').pages():
+        # print(user + str(on_page))
         on_page += 1
         list_of_pages.append(page)
     with open(file, "a") as f:
         for page in list_of_pages:
             for tweet in page:
-                    tweet_text = tweet.text
+                    tweet_text = tweet.full_text
                     f.write(tweet_text.replace("\n", "NEWLINE") + "\n")
 
 
 # donald_trump_download()
 # download_all_tweets('@realDonaldTrump', "trump_data")
-# news_orgs = ["@cbcnews", "@cnn", "@nytimes", "@theeconomist", "@bbcworld", "@ap", "@reuters"]
+news_orgs = ["@cbcnews", "@cnn", "@nytimes", "@theeconomist", "@bbcworld", "@ap", "@reuters"]
 
-# for org in news_orgs:
-#     download_all_tweets(org, "newsorgs_data")
+for org in news_orgs:
+    download_all_tweets(org, "newsorgs_data")
 
     
