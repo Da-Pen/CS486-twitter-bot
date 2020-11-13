@@ -7,16 +7,18 @@ TRUMP_DATA_FILE_NAME = './donald_trump_data'
 SKIP_URLS = True
 SKIP_ELLIPSES = False
 SKIP_RETWEETS = True
-SKIP_REPLIES = True  # it seems like Trump often has tweets where he simply replies to another Twitter user or quotes them. They usually start with '@' or '"@'. If this is set to true, then ignore those tweets.
+SKIP_REPLIES = True     # it seems like Trump often has tweets where he simply replies to another Twitter user or quotes them. They usually start with '@' or '"@'. If this is set to true, then ignore those tweets.
+ONLY_LOWERCASE = False  # if set to True, convert all text to lowercase
 VALID_CHARS = set([
     ' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', ',', '-', '.', '/', '\n',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
     ':', ';', '?', '@', 
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 
     '_', 
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 
     '—', '’', '“', '”'
 ])
+if not ONLY_LOWERCASE:
+    VALID_CHARS.update(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'])
 MIN_VALID_CHAR_PERCENT = 0.9  # at least this ratio of the characters in the tweet have to be valid (i.e have to exist in the above grammar). Otherwise we ignore the tweet.
 
 
@@ -45,6 +47,8 @@ def get_tweets_list(filename, upto=None):
     f.close()
     # replace NEWLINE's and ignore all lines that do not have spaces (because they are probably just a link)
     lines = [line.replace('NEWLINE', '\n') for line in lines if line.strip().find(' ') != -1]
+    if ONLY_LOWERCASE:
+        lines = [line.lower() for line in lines]
     if SKIP_ELLIPSES:  # skip tweets with the '…' character, which indicates that it has been truncated
         lines = [line for line in lines if line.find('…') == -1]
     if SKIP_URLS:
@@ -82,7 +86,7 @@ def get_commonly_occuring_characters():
 def main():
     news_org_tweets = get_tweets_list(NEWS_ORGS_DATA_FILE_NAME)
     trump_tweets = get_tweets_list(TRUMP_DATA_FILE_NAME)
-    print('\n'.join(trump_tweets))
+    # print('\n'.join(trump_tweets))
 
 if __name__ == '__main__':
     main()
