@@ -1,0 +1,1 @@
+A large portion of the LSTM code came from https://www.kaggle.com/talevy23/trump-tweet-generator-lstm-for-text-generation.
