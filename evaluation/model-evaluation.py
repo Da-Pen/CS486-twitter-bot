@@ -74,7 +74,7 @@ def generate_graphs(model_type):
     ax2.plot(temperatures, avg_wordF_scores)
     ax2.set_title(f'{model_type}: Temperature vs word ngram F-score')
     ax2.set_xlabel('Temperature')
-    ax2.set_ylabel('wordF score')
+    ax2.set_ylabel('word ngram F-score')
     fig2.savefig(f'{model_type}-temperature-vs-wordF.png')
 
 
