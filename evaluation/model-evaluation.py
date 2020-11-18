@@ -61,21 +61,27 @@ def generate_graphs(model_type):
             wordF_scores.append(wordF(real_tweet, gen_tweet))
         avg_chrF_scores.append(sum(chrF_scores)/len(chrF_scores))
         avg_wordF_scores.append(sum(wordF_scores)/len(wordF_scores))
+    
+    
+    plt.rcParams.update({'font.size': 14})
+    
     # plot
+    color = 'tab:red'
     fig1, ax1 = plt.subplots()
-    ax1.plot(temperatures, avg_chrF_scores)
-    ax1.set_title(f'{model_type}: Temperature vs chrF')
+    ax1.plot(temperatures, avg_chrF_scores, color=color)
     ax1.set_xlabel('Temperature')
-    ax1.set_ylabel('chrF score')
-    fig1.savefig(f'{model_type}-temperature-vs-chrF.png')
+    ax1.set_ylabel('character n-gram F-score', color=color)
+    ax1.tick_params(axis='y', labelcolor=color)
 
+    ax2 = ax1.twinx()
+    color = 'tab:blue'
+    ax2.plot(temperatures, avg_wordF_scores, color=color)
+    ax2.set_title(f'{model_type}: Temperature vs n-gram F-score')
+    ax2.set_ylabel('word n-gram F-score', color=color)
+    ax2.tick_params(axis='y', labelcolor=color)
+    fig1.tight_layout()  # otherwise the right y-label is slightly clipped
 
-    fig2, ax2 = plt.subplots()
-    ax2.plot(temperatures, avg_wordF_scores)
-    ax2.set_title(f'{model_type}: Temperature vs word ngram F-score')
-    ax2.set_xlabel('Temperature')
-    ax2.set_ylabel('word ngram F-score')
-    fig2.savefig(f'{model_type}-temperature-vs-wordF.png')
+    fig1.savefig(f'{model_type}-temperature-vs-F-score.png')
 
 
 generate_graphs('LSTM')
