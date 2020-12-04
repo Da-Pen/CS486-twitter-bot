@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+plt.rcParams.update({'font.size': 14})
+
 fig1, ax1 = plt.subplots()
 ax1.plot(list(range(1, 11)), [5.76, 4.2, 3.26, 2.51, 1.93, 1.49, 1.18, 1.06, 0.98, 0.96])
 ax1.set_title('LSTM: # Epochs vs Cross Entropy')
